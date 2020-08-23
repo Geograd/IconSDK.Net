@@ -1,0 +1,22 @@
+var json = @"{
+        ""_action"" : ""play_game"", 
+        ""_org_tx_hash"" :"""",
+        ""_side_bet_amount"" : ""0"", 
+        ""_user_seed"" : """"
+        }";
+var values = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+
+var txBuilder = new CallTransactionBuilder();
+txBuilder.PrivateKey = "";  // Your private key
+txBuilder.To = contractAddress;
+txBuilder.Value = 10 * Consts.ICX2Loop;
+txBuilder.StepLimit = Consts.ICX2Loop / 300000000 ;
+txBuilder.NID = 3;
+txBuilder.Method = "main_action";
+txBuilder.Params = values;
+txBuilder.Version = "0x3";
+txBuilder.Nonce = 3;
+var tx = txBuilder.Build();
+var sendTransaction = new SendTransaction("https://bicon.net.solidwallet.io/api/v3");
+
+var txHash = await sendTransaction.Invoke(tx);
